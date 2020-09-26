@@ -5,11 +5,13 @@ import './App.css';
 import Nav from '../Nav/Nav';
 
 import HomePage from '../../Pages/HomePage/HomePage';
+import MapView from '../../Pages/MapView/MapView';
 
 import { variableNames } from '../../../variableNames';
 const dispatches = variableNames.dispatches;
 const LAUNCH = dispatches.standard.requests.try.LAUNCH;
 const home = variableNames.routes.urls.home;
+const map = variableNames.routes.urls.map;
 
 class App extends Component {
   componentDidMount() {
@@ -27,6 +29,11 @@ class App extends Component {
               exact
               path={home}
               component={HomePage}
+            />
+            <Route
+              exact
+              path={map}
+              component={MapView}
             />
             {/* If none of the other routes matched, we will show a 404. */}
             <Route render={() => <h1>404</h1>} />

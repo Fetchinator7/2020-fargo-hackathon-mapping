@@ -7,6 +7,7 @@
   overflow: hidden;
   background-color: #494949;
   height: 65px;
+  width: 100%;
 }
 
 .nav-link {
