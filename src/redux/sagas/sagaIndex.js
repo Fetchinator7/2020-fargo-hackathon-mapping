@@ -1,14 +1,8 @@
 import { all } from 'redux-saga/effects';
-import loginSaga from './launchSaga';
-import roomsSaga from './roomsSaga';
-import usersSaga from './usersSaga';
-import { openSocket } from './socketIndex';
+import launchSaga from './launchSaga';
 
 export default function* rootSaga() {
   yield all([
-    loginSaga(),
-    roomsSaga(),
-    usersSaga(),
-    openSocket()
+    launchSaga()
   ]);
 }

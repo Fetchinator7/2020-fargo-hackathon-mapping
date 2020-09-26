@@ -1,5 +1,5 @@
-import { put, takeLatest } from 'redux-saga/effects';
-import axios from 'axios';
+import { takeLatest } from 'redux-saga/effects';
+// import axios from 'axios';
 import { variableNames } from '../../variableNames';
 const LAUNCH = variableNames.dispatches.standard.requests.try.LAUNCH;
 
