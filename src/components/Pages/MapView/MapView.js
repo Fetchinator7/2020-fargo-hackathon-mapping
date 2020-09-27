@@ -10,10 +10,10 @@ const LAUNCH = variableNames.dispatches.standard.requests.try.LAUNCH;
 class MapView extends Component {
   state = {
     currentLocation: {
-      lat: 28.466944,
-      lng: -82.498148
+      lat: 40.128154,
+      lng: -97.059171
     },
-    zoom: 6,
+    zoom: 5,
     popUpLocation: null
   }
 
