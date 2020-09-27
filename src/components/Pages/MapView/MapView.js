@@ -1,43 +1,87 @@
-import React, { Component } from 'react';
-import { Map, TileLayer } from 'react-leaflet';
+import React, { Component, Fragment } from 'react';
+import { Map, TileLayer, GeoJSON, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import data from './data.json';
-import Markers from './VenueMarkers';
 import { connect } from 'react-redux';
 import { variableNames } from '../../../variableNames';
 
-const maps = variableNames.dispatches.state.keywords.maps;
+const mapsKeyword = variableNames.dispatches.state.keywords.maps;
 const LAUNCH = variableNames.dispatches.standard.requests.try.LAUNCH;
 
 class MapView extends Component {
   state = {
-    currentLocation: { lat: 52.52437, lng: 13.41053 },
-    zoom: 12,
+    currentLocation: {
+      lat: 28.466944,
+      lng: -82.498148
+    },
+    zoom: 6,
+    popUpLocation: null
   }
 
   componentDidMount() {
     this.props.dispatch({ type: LAUNCH });
   }
 
+  onEachFeature = (feature) => {
+    console.log('each feature');
+    console.log(feature);
+    this.setState({ popUpLocation: feature })
+  }
+  renderCountries = () => {
+    const { maps } = this.props;
+    return maps[mapsKeyword].map((country, index) =>
+      <GeoJSON
+        key={`geojson-${index}`}
+        data={country}
+        style={() => ({
+          color: '#4a83ec',
+          weight: 0.5,
+          fillColor: "#1a1d62",
+          fillOpacity: 1,
+        })
+        }
+        onclick={this.onEachFeature}
+      />
+    );
+  }
+
   render() {
-    const { currentLocation, zoom } = this.state;
+    const { currentLocation, zoom, popUpLocation } = this.state;
 
     return (
-      <Map center={currentLocation} zoom={zoom}>
-        <div>text</div>
-        <TileLayer
-          url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-        // attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
-        />
-
-        <Markers venues={data.venues} />
-      </Map>
+      <>
+        <Map
+          center={currentLocation}
+          zoom={zoom}
+        >
+          <div>text</div>
+          <TileLayer
+            url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+            attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+          />
+          {this.renderCountries()}
+          {popUpLocation && (
+            <Popup
+              position={[
+                popUpLocation.latlng.lat,
+                popUpLocation.latlng.lng,
+              ]}
+              onClose={() => {
+                this.setState({ popUpLocation: null });
+              }}
+            >
+              <div>
+                <h2>{popUpLocation.layer.feature.properties.NAME}</h2>
+              </div>
+            </Popup>
+          )}
+        </Map>
+      </>
     );
   }
 }
 
 const mapStateToProps = reduxState => ({
-  [maps]: reduxState[maps]
+  [mapsKeyword]: reduxState[mapsKeyword]
 });
 
 export default connect(mapStateToProps)(MapView);
