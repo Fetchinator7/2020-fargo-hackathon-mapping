@@ -10,16 +10,17 @@ router.get(dataMapRouter.root, (req, res) => {
 });
 
 router.get(dataMapRouter.age, async (req, res) => {
+  const NDStateID = 38;
   const responseMap = await census(
     {
-      vintage: 2019,
+      vintage: 2015,
       geoHierarchy: {
-        state: 28,
-        // county: '*'
+        state: NDStateID,
+        county: '*'
       },
       geoResolution: '5m',
-      // sourcePath: ['acs', 'acs5'],
-      // values: ['AGE', 'POP']
+      sourcePath: ['pep', 'charagegroups'],
+      values: ['POP']
     },
     function (error, response) {
       // L.geoJson(response).addTo(map);

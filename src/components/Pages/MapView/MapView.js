@@ -10,10 +10,9 @@ const LAUNCH = variableNames.dispatches.standard.requests.try.LAUNCH;
 class MapView extends Component {
   state = {
     currentLocation: {
-      lat: 40.128154,
-      lng: -97.059171
+      lat: 46.95781840824292, lng: -97.23999023437501
     },
-    zoom: 5,
+    zoom: 6,
     popUpLocation: null
   }
 
@@ -28,7 +27,9 @@ class MapView extends Component {
   }
   renderCountries = () => {
     const { maps } = this.props;
-    return maps[mapsKeyword].map((country, index) =>
+    // const filtered = maps[mapsKeyword].filter(county => county.properties.GEOID === NDStateID || county.properties.GEOID === cassCountyGeoID);
+    return maps[mapsKeyword].map((country, index) => {
+      return (
       <GeoJSON
         key={`geojson-${index}`}
         data={country}
@@ -41,7 +42,7 @@ class MapView extends Component {
         }
         onclick={this.onEachFeature}
       />
-    );
+    )});
   }
 
   render() {
@@ -71,6 +72,7 @@ class MapView extends Component {
             >
               <div>
                 <h2>{popUpLocation.layer.feature.properties.NAME}</h2>
+                <h2>{popUpLocation.layer.feature.properties.POP && `population: ${popUpLocation.layer.feature.properties.POP}`}</h2>
               </div>
             </Popup>
           )}
